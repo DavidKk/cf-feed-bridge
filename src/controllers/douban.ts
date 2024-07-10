@@ -11,7 +11,7 @@ function extractSeriesListFromDoubanRSSDTO(dto: DoubanRSSDTO): SeriesList {
   const items = dto.rss.channel.item
 
   items.forEach((item) => {
-    const titleMatch = item.title.match(/^(想看|看过|在看)(.*)$/)
+    const titleMatch = item.title.match(/^(想看)(.*)$/)
     if (titleMatch && titleMatch[2]) {
       const title = titleMatch[2].trim()
       const tvdbIdMatch = item.link.match(/\/(\d+)\/$/)
