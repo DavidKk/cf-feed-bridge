@@ -9,11 +9,13 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "ok": "pnpm format && pnpm lint"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20240620.0",
-    "itty-router": "^5.0.17"
+    "fast-xml-parser": "^4.4.0",
+    "itty-router": "^3.0.12"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
