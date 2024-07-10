@@ -8,13 +8,13 @@
 
 豆瓣 RSS 链接格式：`https://www.douban.com/feed/people/{Your_Douban_ID}/interests`
 
+### API 接口
 
-### 路径
+#### 路径
 
 `/api/douban/sonarr/`
 
-### 参数
+#### 参数
 
-| 参数 | 描述 | 示例 |
-| --- | --- | --- |
-| url | 豆瓣 RSS 订阅链接 | `/api/douban/sonarr/?url=${encodeURIComponent("https://www.douban.com/feed/people/{Your_Douban_ID}/interests")}` |
+- **url**: 豆瓣 RSS 订阅链接
+  - 示例: `/api/douban/sonarr/?url=${encodeURIComponent("https://www.douban.com/feed/people/{Your_Douban_ID}/interests")}`
