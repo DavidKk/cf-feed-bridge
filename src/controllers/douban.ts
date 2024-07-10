@@ -16,13 +16,10 @@ function extractSeriesListFromDoubanRSSDTO(dto: DoubanRSSDTO): SeriesList {
       const title = titleMatch[2].trim()
       const tvdbIdMatch = item.link.match(/\/(\d+)\/$/)
       if (tvdbIdMatch && tvdbIdMatch[1]) {
-        const tvdbId = parseInt(tvdbIdMatch[1], 10)
         seriesList.push({
           title,
-          tvdbId,
           seasons: [
             {
-              seasonNumber: 1,
               monitored: true,
             },
           ],
