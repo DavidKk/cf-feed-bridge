@@ -1,4 +1,4 @@
-# Fedd Bridge
+# Feed Bridge
 
 项目属于 `cloudflare worker`
 
