@@ -1,6 +1,6 @@
+import type { RouterType } from 'itty-router'
 import { sonarr } from '../controllers/douban'
-import type { RouterInstance } from '../types/router'
 
-export default function (router: RouterInstance) {
+export default function douban(router: RouterType) {
   router.get('/api/douban/sonarr', sonarr)
 }
