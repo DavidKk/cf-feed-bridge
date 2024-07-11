@@ -25,6 +25,10 @@ export async function getAccessToken(context: IContext): Promise<string> {
 
     const { env } = context
     const { THE_TVDB_API_KEY } = env
+    if (typeof THE_TVDB_API_KEY !== 'string') {
+      throw new Error('Missing THE_TVDB_API_KEY, please check vars.THE_TVDB_API_KEY.')
+    }
+
     const body = JSON.stringify({
       apikey: THE_TVDB_API_KEY,
     })

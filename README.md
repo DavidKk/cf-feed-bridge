@@ -2,6 +2,11 @@
 
 项目属于 `cloudflare worker`
 
+## vars
+
+- **THE_TVDB_API_KEY**: thetvdb API KEY
+  - 需要用到获取 tvdbid 的情况需要配置，没有配置将跳过搜索。
+
 ## 豆瓣 转 Sonarr RSS
 
 将豆瓣 RSS 订阅转换成 Sonarr 可消费的`导入列表`。
