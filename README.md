@@ -4,7 +4,9 @@
 
 ## vars
 
-- **THE_TVDB_API_KEY**: thetvdb API KEY
+本地调试 `.dev.vars`。
+
+- **THE_TVDB_API_KEY**: TheTVDB API KEY
   - 需要用到获取 tvdbid 的情况需要配置，没有配置将跳过搜索。
 
 ## 豆瓣 转 Sonarr RSS
