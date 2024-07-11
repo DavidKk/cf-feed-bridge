@@ -2,6 +2,8 @@ import type { IContext } from '../../initializer/types'
 import { info, fail } from '../../utils/logger'
 import { TOKEN_EXPIRATION_TIME, TVDB_API_BASE_URL } from './conf'
 
+const TIMEOUT_SECONDS = 5e3
+
 export interface AccessTokenResp {
   data: {
     token: string
@@ -14,7 +16,6 @@ let tokenPromise: Promise<string> | null = null
 
 export async function getAccessToken(context: IContext): Promise<string> {
   const now = Date.now()
-
   if (cachedToken && now < tokenExpirationTime) {
     info('Cache hit: Using cached access token')
     return cachedToken
@@ -38,7 +39,10 @@ export async function getAccessToken(context: IContext): Promise<string> {
       'Content-Type': 'application/json',
     }
 
-    tokenPromise = fetch(`${TVDB_API_BASE_URL}/login`, { method: 'POST', headers, body })
+    const controller = new AbortController()
+    const signal = controller.signal
+
+    const fetchPromise = fetch(`${TVDB_API_BASE_URL}/login`, { method: 'POST', headers, body, signal })
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(`Failed to fetch access token: ${response.statusText}`)
@@ -59,15 +63,28 @@ export async function getAccessToken(context: IContext): Promise<string> {
         }
       })
       .catch((err) => {
-        fail(`Error fetching access token: ${err}`)
+        if (err.name === 'AbortError') {
+          fail('Fetch request aborted')
+        } else {
+          fail(`Error fetching access token: ${err}`)
+        }
         throw err
       })
       .finally(() => {
         tokenPromise = null
       })
-  } else {
-    info('Using existing token request promise')
+
+    const timeoutPromise = new Promise<string>((_, reject) => {
+      setTimeout(() => {
+        controller.abort()
+        reject(new Error('Request timed out after 5 seconds'))
+      }, TIMEOUT_SECONDS)
+    })
+
+    tokenPromise = Promise.race([fetchPromise, timeoutPromise])
+    return tokenPromise
   }
 
+  info('Using existing token request promise')
   return tokenPromise
 }
