@@ -12,3 +12,8 @@ export function fail(...messages: any[]) {
   // eslint-disable-next-line no-console
   console.log('[FAIL]', ...messages)
 }
+
+export function debug(...messages: any[]) {
+  // eslint-disable-next-line no-console
+  console.log('[DEBUG]', ...messages)
+}

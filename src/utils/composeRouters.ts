@@ -1,11 +1,11 @@
-import type { RouterInstance } from '../types/router'
+import { RouterType } from "itty-router"
 
 export interface RouteHandler {
-  (router: RouterInstance): void
+  (router: RouterType): void
 }
 
 export function composeRouters(...handlers: RouteHandler[]): RouteHandler {
-  return (instance: RouterInstance) => {
+  return (instance: RouterType) => {
     for (const func of handlers) {
       func(instance)
     }

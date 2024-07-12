@@ -1,8 +1,7 @@
 import type { IContext } from '../../initializer/types'
 import { info, fail } from '../../utils/logger'
+import { request } from '../../utils/request'
 import { TOKEN_EXPIRATION_TIME, TVDB_API_BASE_URL } from './conf'
-
-const TIMEOUT_SECONDS = 5e3
 
 export interface AccessTokenResp {
   data: {
@@ -14,13 +13,21 @@ let cachedToken: string | null = null
 let tokenExpirationTime = 0
 let tokenPromise: Promise<string> | null = null
 
+/**
+ * Retrieves the access token for TVDB API.
+ *
+ * @param context - The context object containing environment variables.
+ * @returns A promise that resolves to the access token.
+ */
 export async function getAccessToken(context: IContext): Promise<string> {
   const now = Date.now()
+  // Check if there is a cached token and if it has not expired
   if (cachedToken && now < tokenExpirationTime) {
     info('Cache hit: Using cached access token')
     return cachedToken
   }
 
+  // If there is no ongoing token request, initiate a new one
   if (!tokenPromise) {
     info('Cache miss: Fetching new access token')
 
@@ -34,15 +41,7 @@ export async function getAccessToken(context: IContext): Promise<string> {
       apikey: THE_TVDB_API_KEY,
     })
 
-    const headers = {
-      accept: 'application/json',
-      'Content-Type': 'application/json',
-    }
-
-    const controller = new AbortController()
-    const signal = controller.signal
-
-    const fetchPromise = fetch(`${TVDB_API_BASE_URL}/login`, { method: 'POST', headers, body, signal })
+    tokenPromise = request('POST', `${TVDB_API_BASE_URL}/login`, { method: 'POST', body })
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(`Failed to fetch access token: ${response.statusText}`)
@@ -62,26 +61,10 @@ export async function getAccessToken(context: IContext): Promise<string> {
           throw new Error(`Failed to parse JSON: ${jsonError}`)
         }
       })
-      .catch((err) => {
-        if (err.name === 'AbortError') {
-          fail('Fetch request aborted')
-        } else {
-          fail(`Error fetching access token: ${err}`)
-        }
-        throw err
-      })
       .finally(() => {
         tokenPromise = null
       })
 
-    const timeoutPromise = new Promise<string>((_, reject) => {
-      setTimeout(() => {
-        controller.abort()
-        reject(new Error('Request timed out after 5 seconds'))
-      }, TIMEOUT_SECONDS)
-    })
-
-    tokenPromise = Promise.race([fetchPromise, timeoutPromise])
     return tokenPromise
   }
 
