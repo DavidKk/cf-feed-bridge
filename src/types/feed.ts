@@ -7,9 +7,13 @@ export interface Season {
 
 export type MovieId = string | number
 
+export type MovieMediaType = 'series' | 'movie'
+
 export interface Series {
   /** 标题 */
   title: string
+  /** 类型 */
+  mediaType?: MovieMediaType
   /** thetvdb.com */
   tvdbId?: MovieId
   /** themoviedb.org */
