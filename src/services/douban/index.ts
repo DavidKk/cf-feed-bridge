@@ -6,14 +6,20 @@ import { fail, info, warn } from '../../utils/logger'
 import { searchByTitle as searchByTitleFromTheTVDB } from '../thetvdb'
 import { searchTVShowByTitle as searchByTitleFromTMDB } from '../tmdb'
 
-export async function extractSeriesListFromDoubanRSSDTO(context: IContext, dto: DoubanRSSDTO): Promise<SeriesList> {
+export interface ExtractSeriesListFromDoubanRSSDTOOptions {
+  onlySeries?: boolean
+  onlyMovie?: boolean
+}
+
+export async function extractSeriesListFromDoubanRSSDTO(context: IContext, dto: DoubanRSSDTO, options?: ExtractSeriesListFromDoubanRSSDTOOptions): Promise<SeriesList> {
   const { env } = context
+  const { onlyMovie = false, onlySeries = false} = options || {}
   const items = dto.rss.channel.item
   if (!(Array.isArray(items) && items.length > 0)) {
     return []
   }
 
-  const seriesies: SeriesList = Array.from(
+  let seriesies: SeriesList = Array.from(
     (function* () {
       for (const item of items) {
         const titleMatch = item.description.match(/title="(.*?)(?:第([零一二三四五六七八九十百千万亿]+?)季)?"/)
@@ -129,6 +135,12 @@ export async function extractSeriesListFromDoubanRSSDTO(context: IContext, dto: 
     )
   } else {
     warn('No API KEY found in environment, skipping series lookup.')
+  }
+
+  if (onlyMovie) {
+    seriesies = seriesies.filter((series) => series.mediaType === 'movie')
+  } else if (onlySeries) {
+    seriesies = seriesies.filter((series) => series.mediaType === 'series')
   }
 
   info('Final series list with TVDB IDs:', seriesies)

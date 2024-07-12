@@ -27,3 +27,18 @@
 
 - **url**: 豆瓣 RSS 订阅链接
   - 示例: `/api/douban/sonarr/?url=${encodeURIComponent("https://www.douban.com/feed/people/{Your_Douban_ID}/interests")}`
+
+## 豆瓣 转 Radarr RSS
+
+将豆瓣 RSS 订阅转换成 Radarr 可消费的`导入列表`。
+
+豆瓣 RSS 链接格式：`https://www.douban.com/feed/people/{Your_Douban_ID}/interests`
+
+#### 路径
+
+`/api/douban/radarr/`
+
+#### 参数
+
+- **url**: 豆瓣 RSS 订阅链接
+  - 示例: `/api/douban/radarr/?url=${encodeURIComponent("https://www.douban.com/feed/people/{Your_Douban_ID}/interests")}`
