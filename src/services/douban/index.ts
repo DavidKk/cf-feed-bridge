@@ -23,7 +23,7 @@ export async function extractSeriesListFromDoubanRSSDTO(context: IContext, dto: 
     (function* () {
       for (const item of items) {
         const titleMatch = item.description.match(/title="(.*?)(?:第([零一二三四五六七八九十百千万亿]+?)季)?"/)
-        const chineseTitleMatch = item.title.match(/^(?:想看)(.*?)(?:第([零一二三四五六七八九十百千万亿]+?)季)?$/)
+        const chineseTitleMatch = item.title.match(/^(?:想看|在看)(.*?)(?:第([零一二三四五六七八九十百千万亿]+?)季)?$/)
         const doubanIdMatch = item.link.match(/\/(\d+)\/$/)
         if (!(chineseTitleMatch && titleMatch)) {
           info(`Skipping item due to no title match: ${item.title}`)
