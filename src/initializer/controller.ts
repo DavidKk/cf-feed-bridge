@@ -42,6 +42,11 @@ export class Context {
 export function controller(handler: ControllerHandler) {
   return (req: IRequest, env: Env, ctx: ExecutionContext) => {
     const context = new Context(req, env, ctx)
-    return handler(context.source)
+    try {
+      return handler(context.source)
+    } catch (err) {
+      const reason = err instanceof Error ? err?.message : Object.prototype.toString.call(err)
+      return new Response(reason, { status: 500 })
+    }
   }
 }

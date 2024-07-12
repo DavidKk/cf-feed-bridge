@@ -17,12 +17,11 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     const { CACHE = '1' } = env
     const { useCache = CACHE === '1', cacheTtl = 60 } = options || {}
     const { url } = req?.query || {}
-
     if (typeof url !== 'string') {
       throw new Error('url is required')
     }
 
-    const cacheKey = new Request(url, req)
+    const cacheKey = new Request(req.url, req)
     const cacheKeyString = cacheKey.url
     const cache = caches.default
 
