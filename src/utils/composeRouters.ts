@@ -1,4 +1,4 @@
-import { RouterType } from "itty-router"
+import type { RouterType } from 'itty-router'
 
 export interface RouteHandler {
   (router: RouterType): void
