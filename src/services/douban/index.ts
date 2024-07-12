@@ -13,7 +13,7 @@ export interface ExtractSeriesListFromDoubanRSSDTOOptions {
 
 export async function extractSeriesListFromDoubanRSSDTO(context: IContext, dto: DoubanRSSDTO, options?: ExtractSeriesListFromDoubanRSSDTOOptions): Promise<SeriesList> {
   const { env } = context
-  const { onlyMovie = false, onlySeries = false} = options || {}
+  const { onlyMovie = false, onlySeries = false } = options || {}
   const items = dto.rss.channel.item
   if (!(Array.isArray(items) && items.length > 0)) {
     return []
