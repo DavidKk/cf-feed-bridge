@@ -1,0 +1,6 @@
+# API KEY
+THE_TVDB_API_KEY=
+TMDB_API_KEY=
+
+# 缓存
+CACHE=1
