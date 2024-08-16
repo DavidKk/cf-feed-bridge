@@ -1,5 +1,5 @@
 import { Router } from 'itty-router'
-import { composeRouters } from '../utils/composeRouters'
+import { composeRouters } from '@/share/composeRouters'
 import douban from './douban'
 
 const initRouter = composeRouters(douban)

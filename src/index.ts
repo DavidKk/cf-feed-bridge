@@ -1,4 +1,4 @@
-import apiRouter from './routers'
+import apiRouter from '@/routers'
 
 export default {
   async fetch(req, env, ctx): Promise<Response> {

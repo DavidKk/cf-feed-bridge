@@ -1,9 +1,9 @@
-import type { IContext } from '../../initializer/types'
-import type { Movie } from './types'
-import { fail, info } from '../../utils/logger'
+import type { IContext } from '@/initializer'
+import { fail, info } from '@/services/logger'
+import { request } from '@/services/request'
 import { TVDB_API_BASE_URL } from './conf'
 import { getAccessToken } from './getAccessToken'
-import { request } from '../../utils/request'
+import type { Movie } from './types'
 
 export interface SearchResponse {
   status: string

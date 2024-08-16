@@ -1,6 +1,6 @@
-import type { IContext } from '../../initializer/types'
-import { info, fail } from '../../utils/logger'
-import { request } from '../../utils/request'
+import type { IContext } from '@/initializer'
+import { info, fail } from '@/services/logger'
+import { request } from '@/services/request'
 import { TOKEN_EXPIRATION_TIME, TVDB_API_BASE_URL } from './conf'
 
 export interface AccessTokenResp {
@@ -11,7 +11,7 @@ export interface AccessTokenResp {
 
 let cachedToken: string | null = null
 let tokenExpirationTime = 0
-let tokenPromise: Promise<string> | null = null
+let tokenPromise: Promise<ResponseLike> | null = null
 
 /**
  * Retrieves the access token for TVDB API.

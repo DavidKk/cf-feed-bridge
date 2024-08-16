@@ -1,8 +1,8 @@
-import type { IContext } from '../../initializer/types'
-import type { SearchResult } from './types'
-import { fail, info, warn } from '../../utils/logger'
+import type { IContext } from '@/initializer'
+import { fail, info, warn } from '@/services/logger'
+import { request } from '@/services/request'
 import { TMDB_API_BASE_URL } from './conf'
-import { request } from '../../utils/request'
+import type { SearchResult } from './types'
 
 export interface SearchResponse {
   page: number

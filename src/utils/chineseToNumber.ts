@@ -16,51 +16,70 @@ const CHINESE_NUMBERS = {
   亿: 1e8,
 }
 
+/**
+ * 判断字符数组是否全是中文数字字符
+ * @param chars - 需要判断的字符数组
+ * @returns 如果字符数组中的所有字符都是中文数字字符，则返回 true，否则返回 false
+ */
 export function isChineseNumber(chars: string[]): chars is (keyof typeof CHINESE_NUMBERS)[] {
   for (const char of chars) {
     if (!(char in CHINESE_NUMBERS)) {
       return false
     }
   }
-
   return true
 }
 
+/**
+ * 将中文数字字符串转换为阿拉伯数字
+ * @param chineseNumber - 中文数字字符串
+ * @returns 转换后的阿拉伯数字，如果输入无效则返回 0
+ */
 export function chineseToNumber(chineseNumber: string): number {
+  // 输入检查，确保是字符串类型
   if (typeof chineseNumber !== 'string') {
     return 0
   }
 
   const chineseChars = chineseNumber.split('')
+  
+  // 检查是否所有字符都是中文数字字符
   if (!isChineseNumber(chineseChars)) {
     return 0
   }
 
-  let result = 0
-  let temp = 0
-  let billion = 0
+  let result = 0   // 存储最终结果
+  let temp = 0     // 临时存储当前数值
+  let billion = 0  // 存储亿的部分
 
   for (let i = 0; i < chineseChars.length; i++) {
     const char = chineseChars[i]
     const num = CHINESE_NUMBERS[char]
 
     if (num === 1e8) {
+      // 处理亿（10^8）的情况
       result += temp
       result *= num
-      billion = result
-      temp = 0
-      result = 0
+      billion = result  // 保存亿的部分
+      temp = 0          // 重置临时数值
+      result = 0        // 重置结果
     } else if (num === 1e4) {
+      // 处理万（10^4）的情况
       result += temp
       result *= num
-      temp = 0
+      temp = 0          // 重置临时数值
     } else if (num >= 10) {
-      temp = (temp === 0 ? 1 : temp) * num
+      // 处理十、百、千的情况
+      if (temp === 0) temp = 1 // 如果当前没有累积的数值，设为1（如 "十" 应变为 10）
+      temp *= num         // 累积当前的数值
     } else {
-      temp += num
+      // 处理个位数字（0-9）的情况
+      result += temp     // 将之前累积的值加入结果中
+      temp = num         // 设定新的数值开始累积
     }
   }
 
+  // 最后处理累积的临时数值和亿的部分
   result += temp
   result += billion
 

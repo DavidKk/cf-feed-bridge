@@ -1,23 +1,11 @@
 import { debug, fail } from './logger'
 
-const TIMEOUT_SECONDS = 30e3 // Default timeout in milliseconds
+const TIMEOUT_SECONDS = 30e3
 
-/**
- * Extended request initialization options.
- * @interface IRequestInit
- * @extends {RequestInit<RequestInitCfProperties>}
- */
 export interface IRequestInit extends RequestInit<RequestInitCfProperties> {
-  timeout?: number // Optional timeout in milliseconds
+  timeout?: number
 }
 
-/**
- * Sends a HTTP request with the specified method, input, and optional initialization options.
- * @param {string} method - The HTTP method (e.g., 'GET', 'POST').
- * @param {RequestInfo} input - The request URL or a Request object.
- * @param {IRequestInit} [init] - Optional initialization options for the request.
- * @returns {Promise<Response>} - A promise that resolves to the response.
- */
 export function request(method: string, input: RequestInfo, init?: IRequestInit): Promise<Response> {
   const { signal, timeout = TIMEOUT_SECONDS } = init || {}
   const controller = new AbortController()
@@ -45,10 +33,12 @@ export function request(method: string, input: RequestInfo, init?: IRequestInit)
     throw err
   })
 
-  const timeoutPromise = new Promise<Response>((_, reject) => {
+  const timeoutPromise = new Promise<ResponseLike>((_, reject) => {
     setTimeout(() => {
+      const TIMEOUT_MESSAGE = `Request timed out after ${timeout / 1e3} seconds`
+      fail(TIMEOUT_MESSAGE)
       controller.abort()
-      reject(new Error('Request timed out after 5 seconds'))
+      reject(new Error(TIMEOUT_MESSAGE))
     }, timeout)
   })
 

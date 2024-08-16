@@ -1,10 +1,12 @@
-import type { IContext } from '../../initializer/types'
-import type { DoubanRSSDTO } from '../../types/douban'
-import type { SeriesList } from '../../types/feed'
-import { chineseToNumber } from '../../utils/chineseToNumber'
-import { fail, info, warn } from '../../utils/logger'
+import type { IContext } from '@/initializer'
+import type { SeriesList } from '@/types/feed'
+import { chineseToNumber } from '@/utils/chineseToNumber'
+import { fail, info, warn } from '@/services/logger'
 import { searchByTitle as searchByTitleFromTheTVDB } from '../thetvdb'
 import { searchTVShowByTitle as searchByTitleFromTMDB } from '../tmdb'
+import type { DoubanRSSDTO } from './types'
+
+export * from './types'
 
 export interface ExtractSeriesListFromDoubanRSSDTOOptions {
   onlySeries?: boolean

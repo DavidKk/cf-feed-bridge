@@ -2,7 +2,7 @@ import { XMLParser } from 'fast-xml-parser'
 import { RSSHeaders, FeedHeaders } from '../constants/header'
 import type { ControllerContext } from '../initializer/controller'
 import { controller } from '../initializer/controller'
-import { info } from './logger'
+import { info } from '../services/logger'
 
 export interface WithRSSOptions {
   /** 是否开启缓存，默认读取 env.CACHE */
@@ -25,11 +25,10 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     const cacheKeyString = cacheKey.url
     const cache = caches.default
 
-    let response: Response | undefined
     if (useCache) {
       info(`Checking cache for key: ${cacheKeyString}`)
-      response = await cache.match(cacheKey)
 
+      const response = await cache.match(cacheKey)
       if (response) {
         info(`Cache hit for key: ${cacheKeyString}`)
 
@@ -46,7 +45,7 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     }
 
     info(`Cache miss for key: ${cacheKeyString}`)
-    response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: RSSHeaders,
     })
@@ -60,7 +59,6 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     const xmlDoc = parser.parse(xmlText)
     const json = await xmlDocHandler(xmlDoc, context)
     const jsonText = JSON.stringify(json)
-
     const responseToCache = new Response(jsonText, {
       headers: {
         ...FeedHeaders,
