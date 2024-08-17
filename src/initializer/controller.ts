@@ -1,4 +1,4 @@
-import { IRequest } from 'itty-router'
+import type { IRequest } from 'itty-router'
 import type { Handler, TrimHandler, HandlerParameters, HandlerReturn, IContext } from './types'
 
 export interface ControllerContext extends IContext {
@@ -56,6 +56,7 @@ export class Context {
    * @returns 处理程序的返回值。
    */
   public use<T extends Handler>(handler: T) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const context = this
     return function (this: any, ...args: HandlerParameters<T>): HandlerReturn<T> {
       return handler.call(this, context, ...args)

@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser'
-import { RSSHeaders, FeedHeaders } from '../constants/header'
+import { RSS_HEADERS, FEED_HEADERS } from '../constants/header'
 import type { ControllerContext } from '../initializer/controller'
 import { controller } from '../initializer/controller'
 import { info } from '../services/logger'
@@ -47,7 +47,7 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     info(`Cache miss for key: ${cacheKeyString}`)
     const response = await fetch(url, {
       method: 'GET',
-      headers: RSSHeaders,
+      headers: RSS_HEADERS,
     })
 
     if (!response.ok) {
@@ -61,7 +61,7 @@ export function withRSS(xmlDocHandler: (xmlDoc: any, context: ControllerContext)
     const jsonText = JSON.stringify(json)
     const responseToCache = new Response(jsonText, {
       headers: {
-        ...FeedHeaders,
+        ...FEED_HEADERS,
         'Cache-Control': `s-maxage=${cacheTtl}`,
       },
     })

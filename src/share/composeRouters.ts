@@ -1,7 +1,7 @@
 import type { RouterType } from 'itty-router'
 
 export interface RouteHandler {
-  /** 
+  /**
    * 函数类型，用于配置路由器实例。
    * @param router - `itty-router` 实例。
    */

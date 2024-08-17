@@ -1,4 +1,4 @@
-import { IRequest } from "itty-router"
+import type { IRequest } from 'itty-router'
 
 export interface IContext {
   /** 请求对象。 */
