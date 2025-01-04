@@ -28,7 +28,7 @@ export async function husky(options = {}) {
   const scripts = [
     inPlatform('win32') ? 'set PATH=\\"%PATH%\\":\\%PATH\\%' : 'export PATH=\\"$PATH\\":\\$PATH',
     ['pre-commit', `pnpm lint-staged`],
-    ['commit-msg', `pnpm commitlint --edit \\\$1`],
+    ['commit-msg', `pnpm commitlint --edit \\$1`],
   ]
 
   const emptyHookCommands = scripts.reduce((hooks, item) => {
