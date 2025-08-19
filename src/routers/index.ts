@@ -1,8 +1,9 @@
 import { Router } from 'itty-router'
 import { composeRouters } from '@/share/composeRouters'
 import douban from './douban'
+import finance from './finance'
 
-const initRouter = composeRouters(douban)
+const initRouter = composeRouters(douban, finance)
 
 const router = Router()
 initRouter(router)
