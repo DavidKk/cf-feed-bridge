@@ -21,7 +21,21 @@ export function parseTasiMarketSummary(htmlOrDoc: string | any): TasiMarketSumma
     date = null
   }
 
-  const result: TasiMarketSummary = { date, values: {} }
+  const result: TasiMarketSummary = {
+    date,
+    open: null,
+    high: null,
+    low: null,
+    close: null,
+    change: null,
+    changePercent: null,
+    companiesTraded: null,
+    volumeTraded: null,
+    valueTraded: null,
+    numberOfTrades: null,
+    marketCap: null,
+    notes: null,
+  }
 
   // find the market summary table(s)
   const tables = cssSelect.selectAll('.market_summary_Table table, .market_summary_Table .tableStyle table, table', doc as any)
@@ -66,10 +80,59 @@ export function parseTasiMarketSummary(htmlOrDoc: string | any): TasiMarketSumma
     }
     if (texts.length >= 2) {
       // interpret first as key, last as value
-      const key = texts[0].replace(/[:\s]+$/, '').toLowerCase()
+      const rawKey = texts[0].replace(/[:\s]+$/, '')
+      const key = rawKey.toLowerCase()
       const rawVal = texts[texts.length - 1]
       const num = parseNumber(rawVal)
-      result.values[key] = num !== null ? num : rawVal
+
+      // map common keys to normalized field names
+      switch (key) {
+        case 'open':
+          result.open = num
+          break
+        case 'high':
+          result.high = num
+          break
+        case 'low':
+          result.low = num
+          break
+        case 'close':
+          result.close = num
+          break
+        case 'change':
+          result.change = num
+          break
+        case '% change':
+        case '%change':
+        case 'change %':
+          result.changePercent = num
+          break
+        case 'companies traded':
+          result.companiesTraded = num !== null ? Number(num) : null
+          break
+        case 'volume traded':
+          result.volumeTraded = num !== null ? Number(num) : null
+          break
+        case 'value traded  (sar)':
+        case 'value traded (sar)':
+        case 'value traded':
+          result.valueTraded = num
+          break
+        case 'no. of trades':
+        case 'no of trades':
+        case 'number of trades':
+          result.numberOfTrades = num !== null ? Number(num) : null
+          break
+        case 'market cap  (sar)':
+        case 'market cap (sar)':
+        case 'market cap':
+          result.marketCap = num
+          break
+        default:
+          // accumulate unknown entries into notes (append)
+          const valForNotes = num !== null ? String(num) : rawVal
+          result.notes = result.notes ? `${result.notes}; ${rawKey}: ${valForNotes}` : `${rawKey}: ${valForNotes}`
+      }
     }
   })
 

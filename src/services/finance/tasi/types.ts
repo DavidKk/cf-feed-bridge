@@ -52,8 +52,30 @@ export type TasiCompanyDailyRecord = {
 }
 
 export type TasiMarketSummary = {
-  /** 报表数据日期 - 从报表页面提取（格式 YYYY-MM-DD），若无法识别为 null */
+  /** 报表数据日期 - 从报表页面提取（格式 YYYY-MM-DD），用于入库时与下面的市场数据一并保存 */
   date: string | null
-  /** 键值对形式的市场摘要数据（键已归一化为小写英文词或短语） */
-  values: Record<string, number | string | null>
+  /** 开盘价（SAR） - 对应原数据 "open" */
+  open: number | null
+  /** 最高价（SAR） - 对应原数据 "high" */
+  high: number | null
+  /** 最低价（SAR） - 对应原数据 "low" */
+  low: number | null
+  /** 收盘/最新价（SAR） - 对应原数据 "close" */
+  close: number | null
+  /** 涨跌额（SAR） - 对应原数据 "change" */
+  change: number | null
+  /** 涨跌幅（百分比） - 对应原数据 "% change"，例如 -0.03 表示 -0.03% */
+  changePercent: number | null
+  /** 成交公司数 - 对应原数据 "companies traded" */
+  companiesTraded: number | null
+  /** 成交量（股或手，视报表） - 对应原数据 "volume traded" */
+  volumeTraded: number | null
+  /** 成交金额（SAR） - 对应原数据 "value traded  (sar)" */
+  valueTraded: number | null
+  /** 成交笔数 - 对应原数据 "no. of trades" */
+  numberOfTrades: number | null
+  /** 市值（SAR） - 对应原数据 "market cap  (sar)" */
+  marketCap: number | null
+  /** 备注/原始键（可选） - 若需要保留原始未归一化的键或额外说明，可填写此字段（通常不入库） */
+  notes?: string | null
 }
