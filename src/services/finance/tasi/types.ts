@@ -50,3 +50,10 @@ export type TasiCompanyDailyRecord = {
   /** 报表数据日期 - 从报表页面提取（格式 YYYY-MM-DD），若无法识别为 null */
   date: string | null
 }
+
+export type TasiMarketSummary = {
+  /** 报表数据日期 - 从报表页面提取（格式 YYYY-MM-DD），若无法识别为 null */
+  date: string | null
+  /** 键值对形式的市场摘要数据（键已归一化为小写英文词或短语） */
+  values: Record<string, number | string | null>
+}

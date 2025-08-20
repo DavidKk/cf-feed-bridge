@@ -1,7 +1,10 @@
 import { json } from '@/initializer/json'
-import { fetchTasiCompaniesDaily } from '@/services/finance/tasi'
+import { fetchTasiCompaniesDaily, fetchTasiMarketSummary } from '@/services/finance/tasi'
 
-export const dailyRecords = json(async () => {
-  const records = await fetchTasiCompaniesDaily()
-  return records
+export const companiesDailyRecords = json(async () => {
+  return fetchTasiCompaniesDaily()
+})
+
+export const marketDailySummary = json(async () => {
+  return fetchTasiMarketSummary()
 })

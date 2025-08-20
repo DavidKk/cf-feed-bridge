@@ -1,17 +1,9 @@
-import { parseDocument } from 'htmlparser2'
 import * as cssSelect from 'css-select'
 import type { TasiCompanyDailyRecord } from './types'
+import { nodeText, parseNumber, parsePercent, ensureDoc } from './utils'
 
-export function parseTasiCompaniesDaily(html: string): TasiCompanyDailyRecord[] {
-  const doc = parseDocument(html)
-
-  function nodeText(node: any): string {
-    if (!node) return ''
-    if (Array.isArray(node)) return node.map(nodeText).join('')
-    if (typeof node.data === 'string') return node.data
-    if (node.children && node.children.length) return node.children.map(nodeText).join('')
-    return ''
-  }
+export function parseTasiCompaniesDaily(htmlOrDoc: string | any): TasiCompanyDailyRecord[] {
+  const doc = ensureDoc(htmlOrDoc)
 
   // extract report date from page (e.g. "Market Date 2025/08/18")
   let reportDate: string | null = null
@@ -245,32 +237,4 @@ export function parseTasiCompaniesDaily(html: string): TasiCompanyDailyRecord[] 
   })
 
   return results
-}
-
-function parseNumber(value?: string | null) {
-  if (value === undefined || value === null) {
-    return null
-  }
-
-  const s = String(value).trim()
-  if (s === '' || s === '-') {
-    return null
-  }
-
-  const cleaned = s.replace(/[,\s]/g, '').replace(/[^0-9.\-]/g, '')
-  const n = Number(cleaned)
-  return Number.isFinite(n) ? n : null
-}
-
-function parsePercent(value?: string | null) {
-  if (value === undefined || value === null) {
-    return null
-  }
-
-  const s = String(value).trim()
-  if (s === '' || s === '-') {
-    return null
-  }
-
-  return parseNumber(s.replace('%', ''))
 }

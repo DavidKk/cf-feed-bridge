@@ -1,4 +1,4 @@
-export const DAILY_REPORT_URL = 'https://www.saudiexchange.sa/Resources/Reports-v2/DetailedDaily_en.html'
+export const DAILY_REPORT_URL = Buffer.from('aHR0cHM6Ly93d3cuc2F1ZGlleGNoYW5nZS5zYS9SZXNvdXJjZXMvUmVwb3J0cy12Mi9EZXRhaWxlZERhaWx5X2VuLmh0bWw=', 'base64').toString('utf-8')
 
 export const DAILY_REPORT_HEADERS = {
   accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
