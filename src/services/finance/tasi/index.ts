@@ -15,9 +15,9 @@ export async function fetchTasiMarketSummary() {
 
 export async function fetchDailyReport() {
   const response = await request('GET', DAILY_REPORT_URL, {
-    headers: {
+    headers: new Headers({
       ...DAILY_REPORT_HEADERS,
-    },
+    }),
   })
 
   if (!response.ok) {
