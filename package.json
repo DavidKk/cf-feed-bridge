@@ -54,7 +54,7 @@
     "ts-node": "^10.9.2",
     "tsd-lite": "^0.9.0",
     "typescript": "^5.5.4",
-    "wrangler": "^3.71.0"
+    "wrangler": "^3.114.17"
   },
   "packageManager": "pnpm@10.30.2+sha512.36cdc707e7b7940a988c9c1ecf88d084f8514b5c3f085f53a2e244c2921d3b2545bc20dd4ebe1fc245feec463bb298aecea7a63ed1f7680b877dc6379d8d0cb4"
 }
