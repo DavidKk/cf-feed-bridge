@@ -65,3 +65,6 @@ nbproject
 *.sublime-workspace
 .idea
 .env
+
+# Fixture HTML (real-world snapshot, invalid markup may break Prettier HTML parser)
+__tests__/fixtures/*.html

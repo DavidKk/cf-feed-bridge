@@ -115,19 +115,21 @@ export function parseTasiCompaniesDaily(htmlOrDoc: string | any): TasiCompanyDai
   const isCompaniesList = headersText.some((h) => h.includes('company')) && headersText.some((h) => h.includes('close'))
   let fixedMapping: Array<string | null> | null = null
   if (isCompaniesList) {
-    // Expected columns (one-to-one from the report):
-    // 0: Company, 1: Open, 2: High, 3: Low, 4: Close, 5: % Change, 6: Volume Traded, 7: Value Traded, 8: No. of Trades, 9: Market Cap
+    // Saudi Exchange "Companies List" table column order (from q.html / Detailed Daily Report):
+    // 0: Symbol, 1: Company, 2: Open (SAR), 3: High (SAR), 4: Low (SAR), 5: Close (SAR),
+    // 6: % Change, 7: Volume Traded, 8: Value Traded (SAR), 9: No. of Trades, 10: Market Cap (SAR)
     const fixed: Array<string | null> = []
-    fixed[0] = 'name'
-    fixed[1] = 'open'
-    fixed[2] = 'high'
-    fixed[3] = 'low'
-    fixed[4] = 'lastPrice'
-    fixed[5] = 'changePercent'
-    fixed[6] = 'volume'
-    fixed[7] = 'turnover'
-    fixed[8] = 'numberOfTrades' // number of trades column
-    fixed[9] = 'marketCap'
+    fixed[0] = 'code' // Symbol
+    fixed[1] = 'name' // Company
+    fixed[2] = 'open'
+    fixed[3] = 'high'
+    fixed[4] = 'low'
+    fixed[5] = 'lastPrice'
+    fixed[6] = 'changePercent'
+    fixed[7] = 'volume'
+    fixed[8] = 'turnover'
+    fixed[9] = 'numberOfTrades'
+    fixed[10] = 'marketCap'
 
     while (fixed.length < headersText.length) {
       fixed.push(null)
@@ -211,8 +213,7 @@ export function parseTasiCompaniesDaily(htmlOrDoc: string | any): TasiCompanyDai
       date: reportDate,
     }
 
-    // compute derived fields when possible
-    // prevClose and change can be derived from lastPrice and changePercent
+    // Compute derived fields when possible (Saudi report has no prevClose/change/amplitude/turnoverRate columns)
     if (rec.lastPrice !== null && rec.changePercent !== null) {
       const pct = rec.changePercent
       const denom = 1 + pct / 100
