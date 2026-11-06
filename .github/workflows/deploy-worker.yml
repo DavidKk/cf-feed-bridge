@@ -15,10 +15,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Enable corepack
+        run: |
+          # pnpm 12 uses bin/pnpm.mjs; corepack <0.36 still resolves pnpm.cjs and breaks.
+          npm install -g corepack@latest
+          corepack enable
 
       - name: Install dependencies
         run: pnpm install
